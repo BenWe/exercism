@@ -1,16 +1,8 @@
 //Solution goes in Sources
 
 extension Collection {
-    func accumulate(_ input: ((Element) -> Element)) -> [Element] {
-        var returnArray = [Element]()
-        for element in self {
-            returnArray.append(input(element))
-        }
-        return returnArray
-    }
-
-    func accumulate(_ input: ((Element) -> [Element])) -> [[Element]] {
-        var returnArray = [[Element]]()
+    func accumulate<T>(_ input: (Element) -> T) -> [T] {
+        var returnArray = [T]()
         for element in self {
             returnArray.append(input(element))
         }
