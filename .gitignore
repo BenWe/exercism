@@ -115,3 +115,9 @@ Thumbs.db
 .idea
 .idea/workspace.xml
 /.idea/
+
+## TypeScript
+
+# Dependency directories
+node_modules/
+jspm_packages/
