@@ -5,31 +5,28 @@ class Clock: Equatable, CustomStringConvertible {
 
     // NARK: - Constants
 
-    private static let totalMinutes = 1_440
-    private static let totalHours = 24
+    private static let minutesInADay = 1_440
 
     // MARK: - Properties
 
-    private var hours: Int
-    private var minutes: Int
+    private var totalMinutes: Int
 
     // MARK: - Init
 
     init(hours: Int, minutes: Int = 0) {
-        self.hours = hours
-        self.minutes = minutes
+        self.totalMinutes = hours * 60 + minutes
     }
 
     // MARK: - Logic
 
     func add(minutes: Int) -> Clock {
-        self.minutes += minutes
+        self.totalMinutes += minutes
 
         return self
     }
 
     func subtract(minutes: Int) -> Clock {
-        self.minutes -= minutes
+        self.totalMinutes -= minutes
 
         return self
     }
@@ -43,40 +40,17 @@ class Clock: Equatable, CustomStringConvertible {
     // MARK: - Custom String Convertible Implementation
 
     var description: String {
-        let totalMinutes = self.findTotalTimeInMinutesAndRemoveRoundTripOfClock()
-        var newTime: Int
-        switch self.minutes {
-        case Int.min ..< 0:
-            newTime = Clock.totalMinutes - totalMinutes
-        case 0:
-            newTime = 0
-        default:
-            newTime = totalMinutes
+        var timeOfDay = self.totalMinutes % Clock.minutesInADay
+
+        if timeOfDay < 0 {
+            timeOfDay += Clock.minutesInADay
         }
 
-
-        let newHours = (self.hours % 24) + self.padHoursIfNessecary()
-        let newMinutes = self.minutes % 60
-
+        let newHours = timeOfDay / 60
+        let newMinutes = timeOfDay % 60
         let string = String(format: "%02d:%02d", newHours, newMinutes)
+
         return string
     }
 
-    private func findTotalTimeInMinutesAndRemoveRoundTripOfClock() -> Int {
-        return (self.minutes + (self.hours * 60)) % Clock.totalMinutes
-    }
-
-    private func subtractHoursIfNessecary() -> Int {
-        return 0
-    }
-
-    private func padHoursIfNessecary() -> Int {
-        if self.minutes < 59 {
-            return 0
-        }
-
-        let rounded = Int(Double(self.minutes / 60).rounded(.down))
-
-        return rounded % 24
-    }
 }
