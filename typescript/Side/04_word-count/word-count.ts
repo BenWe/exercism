@@ -2,7 +2,6 @@ class Words {
     
     count(words: string) {
         let wordMap = new Map<string, number>();
-        // words.trim().replace(/\s/g, ` `).replace(`\n`, ` `).replace(`\t`, ` `).split(` `).forEach(function (word) {
         words.trim().replace(/\s+/g, ` `).split(` `).forEach(function (word) {
             let lowercased = word.toLowerCase();
             if (wordMap.has(lowercased)) {
