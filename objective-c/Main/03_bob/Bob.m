@@ -12,23 +12,15 @@ static NSString *whatever = @"Whatever.";
 #pragma mark - Logic
 
 - (NSString *) hey:(NSString *)input {
-    if ([input stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0) {
+    BOOL isOnlyWhitespace = [input stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0;
+    BOOL isUppercase = [self isUppercase:input];
+    BOOL hasQuestionMark = [input hasSuffix:@"?"];
+
+    if (isOnlyWhitespace) {
         return beThatWay;
     }
 
-    bool hasQuestionMark = [input hasSuffix:@"?"];
-    bool hasExclamationMark = [input hasSuffix:@"!"];
-    bool hasMostlyUppercaseChars = [self isMostlyUppercase:input];
-
-    if (hasMostlyUppercaseChars) {
-        return chillOut;
-    }
-
-    if (hasExclamationMark) {
-        if (!hasMostlyUppercaseChars) {
-            return whatever;
-        }
-
+    if (isUppercase) {
         return chillOut;
     }
 
@@ -39,33 +31,13 @@ static NSString *whatever = @"Whatever.";
     return whatever;
 }
 
-- (bool) isMostlyUppercase:(NSString *)string {
-    NSMutableCharacterSet *uppercaseSetAndUmlauts = [NSMutableCharacterSet uppercaseLetterCharacterSet];
-    [uppercaseSetAndUmlauts formUnionWithCharacterSet:[NSCharacterSet characterSetWithCharactersInString:@"ÄÜÖ"]];
-    NSCharacterSet *everythingButLetters = [[NSCharacterSet letterCharacterSet] invertedSet];
-
-    NSString *filtered = [[string componentsSeparatedByCharactersInSet:everythingButLetters] componentsJoinedByString:@""];
-
-    NSUInteger stringLength = filtered.length;
-    NSUInteger count = 0;
-
-    bool isMostlyUppercase = false;
-
-    for (int i = 0; i < stringLength; i++) {
-        unichar character = [filtered characterAtIndex:i];
-        bool isUppercase = [uppercaseSetAndUmlauts characterIsMember:character];
-
-        if (isUppercase ) {
-            count++;
-        }
-
-        if (count == stringLength) {
-            isMostlyUppercase = true;
-            break;
-        }
+- (BOOL) isUppercase:(NSString *)text {
+    NSString *filtered = [[text componentsSeparatedByCharactersInSet:[[NSCharacterSet letterCharacterSet] invertedSet]] componentsJoinedByString:@""];
+    if ([filtered isEqual:@""]) {
+        return NO;
     }
 
-    return isMostlyUppercase;
+    return [filtered isEqualToString:[filtered uppercaseString]];
 }
 
 @end
