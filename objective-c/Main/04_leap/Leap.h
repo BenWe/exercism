@@ -6,7 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property BOOL isLeapYear;
 
-- (Leap *) initWithCalendarYear:(NSNumber *)year;
+- (instancetype) initWithCalendarYear:(NSNumber *)year;
 
 @end
 
