@@ -16,20 +16,13 @@ struct Gigasecond {
 
     // MARK: - Constants
 
-    private static let calender = Calendar.autoupdatingCurrent
     private static let timezone = TimeZone(identifier: "UTC")!
     private static let dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-    private static let gigasecond = 1_000_000_000
+    private static let gigasecond: Double = 1_000_000_000
 
     // MARK: - Properties
 
-    var description: String {
-        guard let dateWithOneGigasecond = Gigasecond.calender.date(byAdding: .second, value: Gigasecond.gigasecond, to: self.gigasecondDate) else {
-            return ""
-        }
-
-        return Gigasecond.formatter.string(from: dateWithOneGigasecond)
-    }
+    let description: String
 
     private var gigasecondDate: Date
 
@@ -41,6 +34,7 @@ struct Gigasecond {
         }
 
         self.gigasecondDate = date
+        self.description = Gigasecond.formatter.string(from: date + Gigasecond.gigasecond)
     }
 
 }
