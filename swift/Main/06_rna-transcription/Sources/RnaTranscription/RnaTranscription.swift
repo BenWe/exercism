@@ -6,27 +6,14 @@ struct RnaTranscription {
 
 struct Nucleotide {
 
-    // MARK: - Types
+    // MARK: - Constants
 
-    private enum Nucleotide: String {
-        case C
-        case G
-        case T
-        case A
-
-        var dnaComplement: String {
-            switch self {
-            case .C:
-                return "G"
-            case .G:
-                return "C"
-            case .T:
-                return "A"
-            case .A:
-                return "U"
-            }
-        }
-    }
+    private static let nucleotides = [
+        "C": "G",
+        "G": "C",
+        "T": "A",
+        "A": "U",
+    ]
 
     // MARK: - Properties
 
@@ -42,11 +29,11 @@ struct Nucleotide {
 
     func complementOfDNA() throws -> String {
         return try self.rna.reduce("", { (result: String, char: Character) -> String in
-            guard let nucleotide = Nucleotide(rawValue: String(char)) else {
+            guard let nucleotide = Nucleotide.nucleotides[String(char)] else {
                 throw RnaTranscription.TranscriptionError.invalidNucleotide("\(char) is not a valid Nucleotide")
             }
 
-            return result + nucleotide.dnaComplement
+            return result + nucleotide
         })
     }
 
