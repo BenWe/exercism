@@ -41,7 +41,7 @@ struct Nucleotide {
     // MARK: - Logic
 
     func complementOfDNA() throws -> String {
-        return try self.rna.lazy.reduce("", { (result: String, char: Character) -> String in
+        return try self.rna.reduce("", { (result: String, char: Character) -> String in
             guard let nucleotide = Nucleotide(rawValue: String(char)) else {
                 throw RnaTranscription.TranscriptionError.invalidNucleotide("\(char) is not a valid Nucleotide")
             }
