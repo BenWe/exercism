@@ -1,25 +1,15 @@
-struct SumOfMultiples {
-
-    static func toLimit(_ limit: Int, inMultiples multiples: [Int]) -> Int {
-        if limit == 0 {
-            return 0
-        }
-
-        var localMultiples = multiples
-        if let index = localMultiples.index(of: 0) {
-            localMultiples.remove(at: index)
-        }
-
-        var set = Set<Int>()
-        for i in 1 ..< limit {
-            for multiple in localMultiples {
-                if i % multiple == 0 {
-                    set.insert(i)
-                }
-            }
-        }
-
-        return set.reduce(0, +)
+func toLimit(_ limit: Int, inMultiples multiples: [Int]) -> Int {
+    guard limit != 0 else {
+        return 0
     }
 
+    let filteredMultiples = multiples.filter { $0 != 0 }
+    return (1 ..< limit).compactMap { index in
+        for multiple in filteredMultiples {
+            if index.isMultiple(of: multiple) {
+                return index
+            }
+        }
+        return nil
+    }.reduce(0, +)
 }
