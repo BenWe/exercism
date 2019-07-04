@@ -13,18 +13,21 @@ struct Bob {
 
     static func hey(_ input: String) -> String {
         let isOnlyWhitespace = input.trimmingCharacters(in: .whitespacesAndNewlines).count == 0
-        let isUppercase = self.isUppercase(input)
-        let hasQuestionmark = input.hasSuffix("?")
-
         if isOnlyWhitespace {
             return beThatWay
-        } else if isUppercase {
-            return chillout
-        } else if hasQuestionmark {
-            return sure
-        } else {
-            return whatever
         }
+
+        let isUppercase = self.isUppercase(input)
+        if isUppercase {
+            return chillout
+        }
+
+        let hasQuestionmark = input.hasSuffix("?")
+        if hasQuestionmark {
+            return sure
+        }
+
+        return whatever
     }
 
     private static func isUppercase(_ input: String) -> Bool {
