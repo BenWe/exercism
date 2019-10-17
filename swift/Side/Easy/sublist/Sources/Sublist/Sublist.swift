@@ -6,31 +6,38 @@ enum Classification {
 }
 
 func classifier(listOne: [Int], listTwo: [Int]) -> Classification {
-    func getAllElements(from: [Int], in another: [Int]) -> [Int] {
-        return from.compactMap { return another.contains($0) ? $0 : nil }
-    }
+    let listOneCount = listOne.count
+    let listTwoCount = listTwo.count
 
-    func isSublist(one: [Int], two: [Int]) -> Bool {
-        for pair in  {
+    if listOneCount == listTwoCount {
+        return (listOne == listTwo) ? .equal : .unequal
+    } else if listOne.isEmpty {
+        return .sublist
+    } else if listTwo.isEmpty {
+        return .superlist
+    } else if listOneCount < listTwoCount {
+        var listTwoSlice = ArraySlice(listTwo)
 
+        while listTwoSlice.isEmpty == false {
+            let listTwoStartsWithListOne = listTwoSlice.starts(with: listOne)
+            if listTwoStartsWithListOne {
+                return .sublist
+            } else {
+                listTwoSlice = listTwoSlice.dropFirst()
+            }
         }
+    } else {
+        var listOneSlice = ArraySlice(listOne)
 
-        return true
-    }
-
-    if listOne == listTwo {
-        return .equal
-    }
-
-    let filteredOne = getAllElements(from: listOne, in: listTwo)
-    let filteredTwo = getAllElements(from: listTwo, in: listOne)
-
-    let zipper = zip(filteredOne, filteredTwo)
-    for pair in zipper {
-        if pair.0 != pair.1 {
-            return .unequal
+        while listOneSlice.isEmpty == false {
+            let listOneStartsWithListTwo = listOneSlice.starts(with: listTwo)
+            if listOneStartsWithListTwo {
+                return .superlist
+            } else {
+                listOneSlice = listOneSlice.dropFirst()
+            }
         }
     }
 
-    return .sublist
+    return .unequal
 }
