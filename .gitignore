@@ -121,3 +121,10 @@ Thumbs.db
 # Dependency directories
 node_modules/
 jspm_packages/
+
+## DArt
+
+# Dependency directories
+.dart_tool
+.packages
+.pubspec.lock
